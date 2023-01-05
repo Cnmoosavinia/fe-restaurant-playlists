@@ -1,116 +1,103 @@
 import { useEffect, useState } from "react";
-import { deletePlaylistById, getPlaylistByUser } from "../app-api";
+import { getPlaylistByUser } from "../app-api";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { getCuisineImg } from "../utils";
+
 function UserPlaylists() {
     const [userPlaylists, setUserPlaylists] = useState([]);
-    const [deleting, setDeleting] = useState(false);
     const { user, isAuthenticated } = useAuth0();
 
     useEffect(() => {
         if (isAuthenticated) {
-            getPlaylistByUser(user?.email!).then((response) => {
-                setUserPlaylists((currPlaylists) => {
-                    return response;
-                });
-            });
+        getPlaylistByUser(user?.email!).then((response)=>{            
+            setUserPlaylists((currPlaylists)=>{
+                return response
+            })
+        })
         }
-    }, [isAuthenticated, deleting]);
-
-    function handleDelete(playlist_id: number) {
-        setDeleting(true);
-        deletePlaylistById(playlist_id).then((res) => {
-            setDeleting(false);
-        });
-    }
-
+    }, [isAuthenticated]);
     return (
         <div className="Playlists">
-            <h1>My Playlists</h1>
-            <ul>
-                {userPlaylists.map(
-                    (playlist: {
-                        playlist_id: number;
-                        name: string;
-                        location: string;
-                        cuisine: string;
-                        vote_count: string;
-                        total_votes: number;
-                        nickname: string;
-                    }) => {
-                        return (
-                            <li key={playlist.playlist_id}>
-                                <Link to={`/playlists/${playlist.playlist_id}`}>
-                                    <img
-                                        src={getCuisineImg(playlist.cuisine)}
-                                        alt={`${playlist.cuisine} food`}
-                                    />
-                                </Link>
-                                <div className="playlist-info">
-                                    <h2>
+        <h1>Restaurant Platelists</h1>
+        <ul>
+            {userPlaylists.map(
+                (playlist: {
+                    playlist_id: number;
+                    name: string;
+                    location: string;
+                    cuisine: string;
+                    vote_count: string;
+                    total_votes: number;
+                    nickname: string;
+                }) => {
+                    return (
+                        <li key={playlist.playlist_id}>
+                            <Link to={`/playlists/${playlist.playlist_id}`}>
+                                <img
+                                    src={getCuisineImg(playlist.cuisine)}
+                                    alt={`${playlist.cuisine} food`}
+                                />
+                            </Link>
+                            <div className="playlist-info">
+                                <h2>
+                                    <Link
+                                        to={`/playlists/${playlist.playlist_id}`}
+                                    >
+                                        {playlist.name}
+                                    </Link>
+                                </h2>
+                                <p>
+                                    <b>{playlist.nickname}</b>
+                                </p>
+                                <p>
+                                    {playlist.location ? (
                                         <Link
-                                            to={`/playlists/${playlist.playlist_id}`}
+                                            to={`?location=${playlist.location}`}
                                         >
-                                            {playlist.name}
-                                        </Link>
-                                    </h2>
-                                    <p>
-                                        <b>{playlist.nickname}</b>
-                                    </p>
-                                    <p>
-                                        {playlist.location ? (
-                                            <div>{`#${playlist.location}`}</div>
-                                        ) : null}
-                                        {playlist.location && playlist.cuisine
-                                            ? " "
-                                            : null}
-                                        {playlist.cuisine ? (
-                                            <div>{`#${playlist.cuisine}`}</div>
-                                        ) : null}
-                                    </p>
-                                    <div className="review-data">
-                                        <p>{playlist.vote_count}</p>
-                                        <Link className="star" to="">
-                                            ⭐
-                                        </Link>
-                                        <Link className="star" to="">
-                                            ⭐
-                                        </Link>
-                                        <Link className="star" to="">
-                                            ⭐
-                                        </Link>
-                                        <Link className="star" to="">
-                                            ⭐
-                                        </Link>
-                                        <Link className="star" to="">
-                                            ⭐
-                                        </Link>
-                                        <p>Reviews: {playlist.total_votes}</p>
-                                    </div>
-                                </div>
-                                <div className="delete-btn">
-                                    {user?.name === playlist.nickname ? (
-                                        <Link
-                                            to=""
-                                            className="delete-btn"
-                                            onClick={(event) => {
-                                                handleDelete(
-                                                    playlist.playlist_id
-                                                );
-                                            }}
-                                        >
-                                            Delete
+                                            {`#${playlist.location}`}
                                         </Link>
                                     ) : null}
+                                    {playlist.location && playlist.cuisine
+                                        ? " "
+                                        : null}
+                                    {playlist.cuisine ? (
+                                        <Link
+                                            to={`?cuisine=${playlist.cuisine}`}
+                                        >
+                                            {`#${playlist.cuisine}`}
+                                        </Link>
+                                    ) : null}
+                                </p>
+                                <div className="review-data">
+                                    <p>{playlist.vote_count}</p>
+                                    <Link className="star" to="">
+                                        ⭐
+                                    </Link>
+                                    <Link className="star" to="">
+                                        ⭐
+                                    </Link>
+                                    <Link className="star" to="">
+                                        ⭐
+                                    </Link>
+                                    <Link className="star" to="">
+                                        ⭐
+                                    </Link>
+                                    <Link className="star" to="">
+                                        ⭐
+                                    </Link>
+                                    <p>Reviews: {playlist.total_votes}</p>
                                 </div>
-                            </li>
-                        );
-                    }
-                )}
-            </ul>
-        </div>
-    );
+                            </div>
+                        </li>
+                    );
+                }
+            )}
+        </ul>
+    </div>
+);
+    
 }
+
 
 export default UserPlaylists;

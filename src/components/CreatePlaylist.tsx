@@ -38,30 +38,30 @@ export default function CreatePlaylist() {
 
     return (
         <main className="CreatePlaylistPage">
-            <h1>Create a New Playlist</h1>
+            <h1>Create a New Platelist</h1>
             <form onSubmit={handleSubmit} className="CreatePlaylist">
                 <label>
-                    Playlist name
-                    <input type="text" id="playlist-name"></input>
+                     Platelist name
+                    <input type="text" id="playlist-name" placeholder="Please type Platelist name"></input>
                 </label>
                 <label>
                     Description
-                    <input type="text" id="playlist-description"></input>
+                    <input type="text" id="playlist-description" placeholder="Please type platelist desciption"></input>
                 </label>
                 <label>
                     Location
-                    <input type="text" id="playlist-location"></input>
+                    <input type="text" id="playlist-location" placeholder="Please enter the location"></input>
                 </label>
                 <label>
                     Cuisine
-                    <input type="text" id="playlist-cuisine"></input>
+                    <input type="text" id="playlist-cuisine" placeholder="Please type the cuisine"></input>
                 </label>
                 <label>
-                    Choose restaurants for your Playlist{" "}
+                    Choose restaurants for your Platelist{" "}
                     <input
                         id="autocomplete"
                         type="text"
-                        placeholder="type restaurant name"
+                        placeholder="Type restaurant name"
                     ></input>
                 </label>
                 {restaurantAdded ? (
@@ -73,7 +73,7 @@ export default function CreatePlaylist() {
                     <button type="button" onClick={handleAddToPlaylist}>
                         Add Restaurant
                     </button>
-                    <button type="submit">Create Playlist</button>
+                    <button type="submit">Create Platelist</button>
                 </div>
             </form>
         </main>
